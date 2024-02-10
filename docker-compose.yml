@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  response_creation_aggregation:
+    build: 
+      context: ./response_creation_aggregation
+      dockerfile: Dockerfile.dev
+    container_name: response_creation_aggregation
+    environment:
+      - PYTHONUNBUFFERED=1
+      - JUPYTER_TOKEN=project
+      - OPENAI_API_KEY=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
+    ports:
+      - "58488:8888"
+      - "58406:6006"
+      - "58450:5000"
+    restart: always
+    volumes:
+      - "./response_creation_aggregation:/project"
+    networks: 
+      - vector_stores
+      - talkaroo
+
+networks:
+  talkaroo:
+    driver: bridge
+
+  vector_stores:
+    external: True

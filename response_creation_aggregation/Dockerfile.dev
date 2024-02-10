@@ -1,0 +1,68 @@
+FROM python:3.11
+
+ENV JUPYTER_TOKEN project
+
+# Pick up some TF dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        build-essential \
+        tree \
+        curl \
+        libfreetype6-dev \
+        libpng-dev \
+        libzmq3-dev \
+        pkg-config \
+        rsync \
+        software-properties-common \
+        unzip \
+        libgtk2.0-0 \
+        git \
+        tcl-dev \
+        tk-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Pillow and it's dependencies
+RUN apt-get install -y --no-install-recommends libjpeg-dev zlib1g-dev && \
+    pip3 --no-cache-dir install Pillow
+
+# Science libraries and other common packages
+RUN pip3 --no-cache-dir install \
+    numpy scipy scikit-learn scikit-image pandas matplotlib Cython requests
+
+# Tensorflow - CPU
+RUN pip3 install --no-cache-dir --upgrade tensorflow 
+
+# TensorBoard
+EXPOSE 6006
+
+# Jupyter Lab
+RUN pip install jupyter -U && pip install jupyterlab -U
+EXPOSE 8888
+
+# OpenCV 3.4.1    
+RUN pip install opencv-python
+
+# PyTorch 0.3.1
+RUN pip3 install torch
+
+# Large Language Models
+RUN pip3 install --upgrade pip
+RUN pip3 install \
+    trl transformers accelerate sentencepiece \
+    datasets bitsandbytes einops wandb peft \
+    xformers openai pinecone-client langchain \
+    tiktoken unstructured[pdf]
+
+RUN PROTOC_ZIP=protoc-3.15.8-linux-x86_64.zip && \
+    curl -OL https://github.com/google/protobuf/releases/download/v3.15.8/$PROTOC_ZIP && \
+    unzip -o $PROTOC_ZIP -d /usr/local bin/protoc && \
+    unzip -o $PROTOC_ZIP -d /usr/local include/* && \
+    rm -f $PROTOC_ZIP
+
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+RUN python3 -m pip install pymilvus==2.3.2
+
+WORKDIR /project
+
+ENTRYPOINT ["jupyter", "lab","--ip=0.0.0.0","--allow-root"]
