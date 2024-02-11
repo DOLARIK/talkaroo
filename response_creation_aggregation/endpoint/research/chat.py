@@ -30,7 +30,7 @@ class Chat:
 																				"content":user_ask}]
 
 		response = OPENAI_CLIENT.chat.completions.create(
-			model="gpt-3.5-turbo-0125",
+			model="gpt-4",
 			messages=chat_history,
 			temperature=0.79,
 			max_tokens=256,
