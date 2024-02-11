@@ -3,8 +3,6 @@ from endpoint.research.chroma_db import ChromaDB
 from openai import OpenAI
 import os
 
-os.environ["OPENAI_API_KEY"] = "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"
-
 OPENAI_CLIENT = OpenAI()
 
 class Chat:
@@ -32,7 +30,7 @@ class Chat:
 																				"content":user_ask}]
 
 		response = OPENAI_CLIENT.chat.completions.create(
-			model="gpt-4",
+			model="gpt-3.5-turbo-0125",
 			messages=chat_history,
 			temperature=0.79,
 			max_tokens=256,

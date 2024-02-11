@@ -1,9 +1,5 @@
 import chromadb
-# from langchain_community.vectorstores import Chroma
-# from langchain_openai import OpenAIEmbeddings
 import os
-
-# os.environ["OPENAI_API_KEY"] = "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"
 
 class ChromaDB:
 	"""docstring for ChromaDB"""
@@ -11,14 +7,6 @@ class ChromaDB:
 		super(ChromaDB, self).__init__()
 		self.chroma_client = chromadb.HttpClient(host='chroma', port=8000)
 		self.collection = self.chroma_client.get_or_create_collection(name=user_id)
-
-		# self.embeddings = OpenAIEmbeddings()
-
-		# self.langchain_chroma = Chroma(
-		#     client=self.chroma_client,
-		#     collection_name=user_id,
-		#     embedding_function=embedding_function,
-		# )
 
 	def get_recent_messages(self, rounds=5):
 		num_messages = self.collection.count()
