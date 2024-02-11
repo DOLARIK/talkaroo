@@ -1,8 +1,6 @@
 version: '3'
 
 services:
-  frontend:
-    
   response_creation_aggregation-dev:
     build: 
       context: ./response_creation_aggregation
@@ -19,6 +17,24 @@ services:
     restart: always
     volumes:
       - "./response_creation_aggregation:/project"
+    networks: 
+      - vector_stores
+      - talkaroo-dev
+
+  dashboard_backend-dev:
+    build: 
+      context: ./dashboard_backend
+      dockerfile: Dockerfile.dev
+    container_name: dashboard_backend-dev
+    environment:
+      - PYTHONUNBUFFERED=1
+      - JUPYTER_TOKEN=project
+      - OPENAI_API_KEY=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
+    ports:
+      - "57488:8888"
+    restart: always
+    volumes:
+      - "./dashboard_backend:/project"
     networks: 
       - vector_stores
       - talkaroo-dev
