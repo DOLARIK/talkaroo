@@ -1,0 +1,3 @@
+[submodule "talkaroo-frontend"]
+	path = talkaroo-frontend
+	url = git@github.com:DOLARIK/talkaroo-frontend.git
