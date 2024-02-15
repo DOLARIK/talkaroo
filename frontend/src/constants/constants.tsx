@@ -1,0 +1,1 @@
+export const aiAvatar = "/talkaroo-icon.png"
