@@ -9,7 +9,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - JUPYTER_TOKEN=project
-      - OPENAI_API_KEY=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
+      - OPENAI_API_KEY=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
     ports:
       - "58488:8888"
       - "58406:6006"
@@ -29,7 +29,8 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - JUPYTER_TOKEN=project
-      - OPENAI_API_KEY=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
+      - OPENAI_API_KEY=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
+      - SERPAPI_API_KEY=53a9d28982583abbcac93f13e0ae6a8789104664de183399f0659b82655d8127
     ports:
       - "57488:8888"
     restart: always
