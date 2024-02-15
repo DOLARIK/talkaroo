@@ -6,7 +6,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 
-client = OpenAI(api_key = "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")
+client = OpenAI(api_key = "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")
 
 
 def to_do_method(data):
@@ -59,9 +59,12 @@ def main():
     all_collections = chroma_client.list_collections()
 
     user_wise_todo = {}
-
+    
     for collection in all_collections:
-        user_wise_todo[collection.name] = collection_based_todo(collection.name)
+        user_wise_todo[collection.name] = collection_based_todo(collection.name) 
 
         # Corrected the document path and data to be stored in Firestore
-        db.document(f"{collection.name}/02112024").set({"todo": user_wise_todo[collection.name]})    
+        db.document(f"{collection.name}/02112024").set({"to_do": user_wise_todo[collection.name]})
+
+    
+    

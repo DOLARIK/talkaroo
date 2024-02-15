@@ -5,23 +5,17 @@ import chromadb
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-
-
 from langchain.llms import OpenAI
 from langchain.agents import load_tools
 from langchain.agents import initialize_agent
 import os
 
 def well_being_method(data):
-    os.environ["OPENAI_API_KEY"] = "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"
-
-    os.environ["SERPAPI_API_KEY"] = "b8ce139aada0de74a5da361a6cd9510224945ead58fa100ec846870b3468c71a"
-
 
     llm = OpenAI(model_name="gpt-3.5-turbo-instruct", temperature=0.9)
     tools = load_tools(["serpapi"], llm=llm)
     agent = initialize_agent(tools, llm, agent="zero-shot-react-description", verbose=True)
-    agent.run(
+    response = agent.run(
 """
 You are the user's best friend. Your aim is to analyze your conversation with the user and provide wellness tips especially related to mental health.
 
@@ -31,10 +25,7 @@ Follow these rules:
 
 Here is the conversation - {data}
 """)
-    return agent.agent.history
-
-
-
+    return response
 
 def collection_based_well_being(collection_name):
     chroma = ChromaDB(collection_name) 
