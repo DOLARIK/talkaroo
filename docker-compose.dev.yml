@@ -1,15 +1,14 @@
 version: '3'
 
 services:
-  response_creation_aggregation-dev:
+  response_creation_aggregation:
     build: 
       context: ./response_creation_aggregation
       dockerfile: Dockerfile.dev
-    container_name: response_creation_aggregation-dev
+    container_name: response_creation_aggregation_dev
     environment:
       - PYTHONUNBUFFERED=1
       - JUPYTER_TOKEN=project
-      - OPENAI_API_KEY=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
     ports:
       - "58488:8888"
       - "58406:6006"
@@ -18,31 +17,30 @@ services:
     volumes:
       - "./response_creation_aggregation:/project"
     networks: 
-      - vector_stores
-      - talkaroo-dev
+      - talkaroo_dev
+    env_file:
+      - .env
+      - .env.dev
 
-  dashboard_backend-dev:
+  dashboard_backend:
     build: 
       context: ./dashboard_backend
       dockerfile: Dockerfile.dev
-    container_name: dashboard_backend-dev
+    container_name: dashboard_backend_dev
     environment:
       - PYTHONUNBUFFERED=1
       - JUPYTER_TOKEN=project
-      - OPENAI_API_KEY=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
-      - SERPAPI_API_KEY=53a9d28982583abbcac93f13e0ae6a8789104664de183399f0659b82655d8127
     ports:
       - "57488:8888"
     restart: always
     volumes:
       - "./dashboard_backend:/project"
     networks: 
-      - vector_stores
-      - talkaroo-dev
+      - talkaroo_dev
+    env_file:
+      - .env
+      - .env.dev
 
 networks:
-  talkaroo-dev:
+  talkaroo_dev:
     driver: bridge
-
-  vector_stores:
-    external: True

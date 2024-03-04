@@ -16,6 +16,8 @@ services:
       - 3000:3000
     networks:
       - talkaroo
+    env_file:
+      - .env
 
   response_creation_aggregation:
     build: 
@@ -31,20 +33,19 @@ services:
     volumes:
       - "./response_creation_aggregation:/project"
     networks: 
-      - vector_stores
       - talkaroo
+    env_file:
+      - .env
+
 
   chromadb:
     image: chromadb/chroma
     container_name: chroma
-    networks:
-      - vector_stores
     ports:
       - "8000:8000"  # Adjust the port as needed
+    env_file:
+      - .env
 
 networks:
   talkaroo:
     driver: bridge
-
-  vector_stores:
-    external: True
