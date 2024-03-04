@@ -32,9 +32,9 @@ function Dashboard() {
     },{
     
     
-     title: "Logout",
-     description: "Logout from Talkaroo",
-     path: "/api/auth/logout",
+     title: "Wellbeing",
+     description: "Track your wellbeing",
+     path: "/",
     },
 ]
 

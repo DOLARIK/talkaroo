@@ -3,7 +3,7 @@ version: '3'
 services:
   frontend:
     build:
-      context: ./talkaroo-frontend
+      context: ./frontend
       dockerfile: Dockerfile
     container_name: talkaroo_user_interface
     environment:

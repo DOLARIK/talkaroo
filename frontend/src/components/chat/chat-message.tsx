@@ -6,7 +6,7 @@ import type { message } from "@/types/messages";
 function ChatMessage(prop: message) {
   return (
     <div>
-      <div className="flex gap-2 text-primary/90 text-sm">
+      <div className="flex gap-2 text-black/90 text-sm">
         <Avatar>
           <AvatarImage src={prop.avatarSource} />
           <AvatarFallback>{prop.avatarFallback}</AvatarFallback>

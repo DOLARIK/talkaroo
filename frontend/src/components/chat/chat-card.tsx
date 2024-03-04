@@ -39,7 +39,7 @@ function ChatCard({ messages, isRecording, transcript }: ChatCardProps) {
               Chat with Talkaroo, your AI confidant
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 overflow-y-scroll">
             {messages.map((msg: message, index) => (
               <ChatMessage
                 key={index}
@@ -52,7 +52,7 @@ function ChatCard({ messages, isRecording, transcript }: ChatCardProps) {
           </CardContent>
           <CardFooter className="space-x-2">
             <Input placeholder="How can I help you?"  />
-            <Button>Send</Button>
+            <Button >Send</Button>
           </CardFooter>
         </Card>
       </div> 

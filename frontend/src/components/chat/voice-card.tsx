@@ -9,6 +9,7 @@ import { Button } from "../ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "../ui/card";
 import ChatMessage from "./chat-message";
 import { addMessageToArray } from "@/database/firebase";
+import ChatBotCanvas from "./chatbot-canvas";
 
 
 //2. Extend Window interface for webkitSpeechRecognition
@@ -20,7 +21,27 @@ declare global {
 
 //3. Main functional component declaration
 export function VoiceCard() {
+ 
   const { user } = useUser();
+  const userId = user?.email ?? "";
+ 
+
+  const synth = typeof window !== 'undefined' ? window.speechSynthesis : null;
+  const voices = synth?.getVoices()
+  
+
+  const selectedVoices = voices?.find((voice) => voice.name === 'Karen');
+
+  const speak = (text: string) => {
+    setIsSpeaking(true);
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.voice = selectedVoices!;
+    utterance.rate = 1.2;
+    synth?.speak(utterance);
+    utterance.onend = () => {
+      setIsSpeaking(false);
+    };
+  }
 
   //4. State hooks for various functionalities
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -28,6 +49,8 @@ export function VoiceCard() {
   const [transcript, setTranscript] = useState<string>("");
   const [response, setResponse] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
 
   const [inputValue, setInputValue] = useState<string>("");
 
@@ -37,9 +60,11 @@ export function VoiceCard() {
   const recognitionRef = useRef<any>(null);
   const silenceTimerRef = useRef<any>(null);
 
+
   //7. Asynchronous function to handle backend communication
-  const sendToBackend = async (message: string, modelKeyword?: string): Promise<void> => {
+  const sendToBackend = async (message: string): Promise<void> => {
     setIsLoading(true);
+    setIsSpeaking(true);
 
     messages.push({ name: user?.name ?? "You", message: message, avatarSource: user?.picture ?? "", avatarFallback: "YOU" });
     addMessageToArray(user?.email ?? "", message);
@@ -48,29 +73,32 @@ export function VoiceCard() {
       //7.1 Stop recording before sending data
       stopRecording();
       //7.2 Send POST request to backend
-      //TODO FIX THIS API
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message, model: modelKeyword }),
-      });
-      //7.3 Check for response validity
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      //7.4 Process and play audio response if available
-      const data = await response.json();
-      if (data.data && data.contentType === "audio/mp3") {
-        const audioSrc = `data:audio/mp3;base64,${data.data}`;
-        const audio = new Audio(audioSrc);
-        setIsPlaying(true);
-        audio.play();
-        audio.onended = () => {
-          setIsPlaying(false);
-          startRecording();
-        };
-      }
+
+      fetch('http://localhost:30500/ask', {
+  method: 'POST', // Method itself
+  headers: {
+    'Content-Type': 'application/json', // Indicates the content 
+  },
+  body: JSON.stringify({
+    user_id: "user",
+    ask: message +  "make the answer short but engaging"
+  }) // Body data type must match "Content-Type" header
+})
+.then(response => response.json()) // Parses JSON response into native JavaScript objects
+.then(data => {
+  console.log(data);
+  const response = data.response;
+  speak(response);
+  messages.push({ name: "Talkaroo", message: response, avatarSource: "/talkaroo-icon.png", avatarFallback: "AI" });
+  setMessages([...messages]);
+  setResponse(response);
+  setIsLoading(false);
+})
+.catch((error) => {
+  console.error('Error:', error); // Handle the error
+});
     } catch (error) {
-      //7.5 Handle errors during data transmission or audio playback
-      console.error("Error sending data to backend or playing audio:", error);
+        console.error(error)
     }
     setIsLoading(false);
   };
@@ -88,7 +116,6 @@ export function VoiceCard() {
     silenceTimerRef.current = setTimeout(() => {
       //9.1 Extract and send detected words to backend
       const words = interimTranscript.split(" ");
-      //TODO ADD USER ID
       sendToBackend(interimTranscript, );
       setTranscript("");
       setInputValue("");
@@ -130,20 +157,33 @@ export function VoiceCard() {
     else if (isRecording) stopRecording();
   };
 
+  const handleSubmitChat = () => {
+    sendToBackend(inputValue);
+    setInputValue("");
+
+  }
+
   //14. Main component rendering method
   return (
     //14.1 Render recording and transcript status
     <main >
 
       {/* 14.2 Render model selection and recording button */}
-      <div className="w-full min-h-max bg-slate-200">
+      <div className=" min-h-max ">
       <div className="flex flex-row">
-              <button
+        <div className="flex-col p-5 items-center h-max justify-center">
+        <ChatBotCanvas isTalking={isSpeaking} />
+        <div className="mt-20">
+              <Button
+                variant={"wmax"}
                 onClick={handleToggleRecording}
-                className={`m-auto flex items-center justify-center ${
-                  isRecording ? "bg-red-500 prominent-pulse" : "bg-blue-500"
-                } rounded-full w-48 h-48 focus:outline-none`}
-              />
+                className={`${ isRecording }`}
+                disabled={isRecording || isSpeaking}
+              > {!isRecording? !isSpeaking ? <div>Speak to me</div>  : <div>Listen up</div> : <div>Listening...</div>} </Button>
+              </div>
+        </div>
+        
+
               <div>
               <div>
     
@@ -155,7 +195,8 @@ export function VoiceCard() {
             Chat with Talkaroo, your AI confidant
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 overflow-y-scroll">
+          
           {messages.map((msg: message, index) => (
             <ChatMessage
               key={index}
@@ -167,10 +208,18 @@ export function VoiceCard() {
           ))}
         </CardContent>
         <CardFooter className="space-x-2">
-          <Input placeholder="How can I help you?" disabled={isRecording} value={inputValue} 
+          <Input placeholder="How can I help you?" disabled={isRecording || isSpeaking || isLoading} value={inputValue} 
           onChange={(e) => setInputValue(e.target.value)}
+          onSubmit={handleSubmitChat}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSubmitChat();
+            }
+          
+          }
+        }
           />
-          <Button disabled={isRecording} onClick={handleResult}>Send</Button>
+          <Button disabled={isRecording || isSpeaking || isLoading} onClick={handleSubmitChat}>Send</Button>
         </CardFooter>
       </Card>
     </div> 

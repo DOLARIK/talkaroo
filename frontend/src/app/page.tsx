@@ -1,12 +1,11 @@
 "use client";
 import MainScreen from "@/components/main-screen";
 import Navbar from "@/components/navbar";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { addDocumentToUsers,addMessageToArray } from "@/database/firebase";
-import { Button } from "@/components/ui/button";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function Home() {
-  const { user, error, isLoading } = useUser();
+  const { user, isLoading } = useUser();
 
   if (isLoading)
     return (

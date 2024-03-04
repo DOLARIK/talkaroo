@@ -17,13 +17,14 @@ import { MdMenu } from "react-icons/md";
 import Dashboard from "./dashboard";
 import ChatCard from "./chat/chat-card";
 import { VoiceCard } from "./chat/voice-card";
+import ChatBotCanvas from "./chat/chatbot-canvas";
 
 function MainScreen() {
   const { user, error, isLoading } = useUser();
 
   if (isLoading) return <div>Loading...</div>;
 
-  if (error) return <div>{error.message}</div>;
+  if (error) return <div>error</div>;
 
   if (!user)
     return (
@@ -38,8 +39,8 @@ function MainScreen() {
               <Image
                 src="/talkaroo-icon.png"
                 alt="Talkaroo"
-                width={500}
-                height={500}
+                width={400}
+                height={400}
               />
             </div>
 
@@ -65,6 +66,7 @@ function MainScreen() {
     <div>
       <VoiceCard />
       {/* <ChatCard /> */}
+      
     </div>
   );
 }
