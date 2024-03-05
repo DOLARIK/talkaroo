@@ -12,7 +12,7 @@ services:
       - AUTH0_ISSUER_BASE_URL=${AUTH0_ISSUER_BASE_URL}
       - AUTH0_CLIENT_ID=${AUTH0_CLIENT_ID}
       - AUTH0_CLIENT_SECRET=${AUTH0_CLIENT_SECRET}
-      - RESPONSE_CREATION_AGGREGATION_API=${RESPONSE_CREATION_AGGREGATION_API}
+      - NEXT_PUBLIC_RESPONSE_CREATION_AGGREGATION_API=${NEXT_PUBLIC_RESPONSE_CREATION_AGGREGATION_API}
     ports:
       - 3000:3000
     networks:
@@ -46,6 +46,8 @@ services:
       - "8000:8000"  # Adjust the port as needed
     env_file:
       - .env
+    networks: 
+      - talkaroo
 
 networks:
   talkaroo:
