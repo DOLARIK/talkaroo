@@ -74,7 +74,7 @@ export function VoiceCard() {
       stopRecording();
       //7.2 Send POST request to backend
 
-      fetch('http://localhost:30500/ask', {
+      fetch(process.env.RESPONSE_CREATION_AGGREGATION_API, {
   method: 'POST', // Method itself
   headers: {
     'Content-Type': 'application/json', // Indicates the content 
