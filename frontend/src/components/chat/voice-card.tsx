@@ -74,6 +74,9 @@ export function VoiceCard() {
       stopRecording();
       //7.2 Send POST request to backend
 
+      // Log the API endpoint for debugging
+      console.log('API Endpoint:', process.env.RESPONSE_CREATION_AGGREGATION_API);
+
       fetch(process.env.RESPONSE_CREATION_AGGREGATION_API, {
   method: 'POST', // Method itself
   headers: {
