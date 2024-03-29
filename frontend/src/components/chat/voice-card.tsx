@@ -79,7 +79,7 @@ export function VoiceCard() {
       // Log the API endpoint for debugging
       // console.log('API Endpoint:', process.env.RESPONSE_CREATION_AGGREGATION_API);
 
-      fetch("http://localhost:30500/ask", {
+      fetch(process.env.NEXT_PUBLIC_RESPONSE_CREATION_AGGREGATION_API || 'http://localhost:30500/ask', {
   method: 'POST', // Method itself
   headers: {
     'Content-Type': 'application/json', // Indicates the content 
