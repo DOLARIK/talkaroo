@@ -19,6 +19,6 @@ COPY . .
 EXPOSE 3000
 
 # Command to run the development server
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "deploy"]
 # or use yarn if preferred
 # CMD ["yarn", "dev"]

@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
@@ -12,12 +11,11 @@ import {
 } from "./ui/dropdown-menu";
 import {IoIosLogOut} from "react-icons/io";
 import { Button } from "./ui/button";
+import { useAuth } from "@/context/authContext.js";
+
 
 export default function ProfileClient() {
-  const { user, error, isLoading } = useUser();
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
+  const {user, logOut} = useAuth();
 
   return (
     user ? (
@@ -26,21 +24,20 @@ export default function ProfileClient() {
           <DropdownMenuTrigger>
             <Avatar>
               <AvatarImage
-                src={user.picture ? user.picture : ""}
+                src={user.profPic}
                 alt="Avatar"
               />
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+            <DropdownMenuLabel>{user.displayName}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <a href="/api/auth/logout">
-                <div className="flex flex-row ">
+
+                <div className="flex flex-row " onClick={logOut()}>
                 <IoIosLogOut className="w-6 h-6" />
                 <span className="ml-2">Logout</span>
                 </div>
-              </a>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

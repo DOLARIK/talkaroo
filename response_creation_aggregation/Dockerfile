@@ -55,6 +55,7 @@ COPY requirements.txt requirements.txt
 ENV FLASK_APP ./endpoint/app.py 
 
 RUN pip3 install -e .
+RUN pip3 install langchain_anthropic langchain_openai numexpr google-search-results
 # RUN pip3 install -r requirements.txt
 
 
