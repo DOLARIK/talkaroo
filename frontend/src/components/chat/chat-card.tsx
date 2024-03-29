@@ -11,7 +11,6 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import type { message } from "@/types/messages";
 import { aiAvatar } from "@/constants/constants";
 import ChatMessage from "./chat-message";
@@ -34,9 +33,9 @@ function ChatCard({ messages, isRecording, transcript }: ChatCardProps) {
       <div className="flex max-h-screen items-center justify-center">
         <Card className="w-[700px] h-[700px] grid grid-rows-[min-content_1fr_min-content]">
           <CardHeader>
-            <CardTitle>Talkaroo</CardTitle>
+            <CardTitle>AI Chat</CardTitle>
             <CardDescription>
-              Chat with Talkaroo, your AI confidant
+              Chat with AI Chat, your AI confidant
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 overflow-y-scroll">

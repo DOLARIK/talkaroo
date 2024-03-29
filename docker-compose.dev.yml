@@ -5,7 +5,7 @@ services:
     build: 
       context: ./response_creation_aggregation
       dockerfile: Dockerfile.dev
-    container_name: response_creation_aggregation_dev
+    container_name: response_creation_aggregation
     environment:
       - PYTHONUNBUFFERED=1
       - JUPYTER_TOKEN=project
@@ -17,16 +17,16 @@ services:
     volumes:
       - "./response_creation_aggregation:/project"
     networks: 
-      - talkaroo_dev
+      - pinked
     env_file:
       - .env
       - .env.dev
 
-  dashboard_backend:
+  dashboard:
     build: 
       context: ./dashboard_backend
       dockerfile: Dockerfile.dev
-    container_name: dashboard_backend_dev
+    container_name: dashboard
     environment:
       - PYTHONUNBUFFERED=1
       - JUPYTER_TOKEN=project
@@ -36,11 +36,11 @@ services:
     volumes:
       - "./dashboard_backend:/project"
     networks: 
-      - talkaroo_dev
+      - pinked
     env_file:
       - .env
       - .env.dev
 
 networks:
-  talkaroo_dev:
+  pinked:
     driver: bridge

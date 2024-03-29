@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react'
-import { useUser } from "@auth0/nextjs-auth0/client";
 import Navbar from './navbar';
 import Image from 'next/image'
 import { Button } from './ui/button';
@@ -12,7 +11,7 @@ function Dashboard() {
    const options = [ 
     {
         title: "Chat",
-        description: "Chat with Talkaroo",
+        description: "Chat with AI Chat",
         path: "/",
     },
     {
@@ -26,16 +25,17 @@ function Dashboard() {
      path: "/journal",
     },
     {
-        title: "Suggestions",
-        description: "Get suggestions from Talkaroo",
-        path: "/suggestions",
-    },{
     
     
      title: "Wellbeing",
      description: "Track your wellbeing",
      path: "/",
     },
+    {
+      title: "Reports",
+      description: "Get your reports from AI Chat",
+      path: "/reports",
+  },
 ]
 
     

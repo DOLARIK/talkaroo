@@ -3,13 +3,14 @@
 import { useEffect, useState, useRef } from "react";
 import ChatCard from "./chat-card";
 import { message } from "@/types/messages";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "../ui/card";
 import ChatMessage from "./chat-message";
-import { addMessageToArray } from "@/database/firebase";
+// import { addMessageToArray } from "@/database/firebase";
 import ChatBotCanvas from "./chatbot-canvas";
+// import {user} from "@/constants/constants";
+import { useAuth } from "@/context/authContext.js";
 
 
 //2. Extend Window interface for webkitSpeechRecognition
@@ -21,9 +22,10 @@ declare global {
 
 //3. Main functional component declaration
 export function VoiceCard() {
+  //3.1 Get user details from context
+  const user = useAuth();
  
-  const { user } = useUser();
-  const userId = user?.email ?? "";
+  const userId = user?.uid ?? "";
  
 
   const synth = typeof window !== 'undefined' ? window.speechSynthesis : null;
@@ -66,8 +68,8 @@ export function VoiceCard() {
     setIsLoading(true);
     setIsSpeaking(true);
 
-    messages.push({ name: user?.name ?? "You", message: message, avatarSource: user?.picture ?? "", avatarFallback: "YOU" });
-    addMessageToArray(user?.email ?? "", message);
+    messages.push({ name: user?.displayName ?? "You", message: message, avatarSource: user?.picture ?? "", avatarFallback: "YOU" });
+    // addMessageToArray(user?.email ?? "", message);
 
     try {
       //7.1 Stop recording before sending data
@@ -77,7 +79,7 @@ export function VoiceCard() {
       // Log the API endpoint for debugging
       // console.log('API Endpoint:', process.env.RESPONSE_CREATION_AGGREGATION_API);
 
-      fetch(process.env.NEXT_PUBLIC_RESPONSE_CREATION_AGGREGATION_API, {
+      fetch("http://localhost:30500/ask", {
   method: 'POST', // Method itself
   headers: {
     'Content-Type': 'application/json', // Indicates the content 
@@ -92,7 +94,7 @@ export function VoiceCard() {
   console.log(data);
   const response = data.response;
   speak(response);
-  messages.push({ name: "Talkaroo", message: response, avatarSource: "/talkaroo-icon.png", avatarFallback: "AI" });
+  messages.push({ name: "AI Chat", message: response, avatarSource: "/talkaroo-icon.png", avatarFallback: "AI" });
   setMessages([...messages]);
   setResponse(response);
   setIsLoading(false);
@@ -193,9 +195,9 @@ export function VoiceCard() {
     <div className="flex max-h-screen items-center justify-center">
       <Card className="w-[700px] h-[700px] grid grid-rows-[min-content_1fr_min-content]">
         <CardHeader>
-          <CardTitle>Talkaroo</CardTitle>
+          <CardTitle>AI Chat</CardTitle>
           <CardDescription>
-            Chat with Talkaroo, your AI confidant
+            Chat with AI Chat, your AI confidant
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 overflow-y-scroll">
