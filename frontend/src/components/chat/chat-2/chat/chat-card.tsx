@@ -64,7 +64,7 @@ export const ChatCard = () => {
           stopRecording();
           //7.2 Send POST request to backend
     
-          fetch('http://localhost:30500/ask', {
+          fetch('http://35.197.94.204:30500/ask', {
       method: 'POST', // Method itself
       headers: {
         'Content-Type': 'application/json', // Indicates the content 

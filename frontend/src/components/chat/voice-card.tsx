@@ -77,9 +77,9 @@ export function VoiceCard() {
       //7.2 Send POST request to backend
 
       // Log the API endpoint for debugging
-      console.log('API Endpoint:', process.env.RESPONSE_CREATION_AGGREGATION_API);
+      // console.log('API Endpoint:', process.env.RESPONSE_CREATION_AGGREGATION_API);
 
-      fetch('http://35.197.94.204:30500/ask' || 'http://localhost:30500/ask', {
+      fetch('http://35.197.94.204:30500/ask', {
   method: 'POST', // Method itself
   headers: {
     'Content-Type': 'application/json', // Indicates the content 
