@@ -75,7 +75,7 @@ export const ChatCard = () => {
       },
       body: JSON.stringify({
         user_id: userId ?? "user",
-        ask: message +  "make the answer short but engaging"
+        ask: message 
       }) // Body data type must match "Content-Type" header
     })
     .then(response => response.json()) // Parses JSON response into native JavaScript objects

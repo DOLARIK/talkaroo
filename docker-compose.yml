@@ -47,6 +47,8 @@ services:
       - "8000:8000"  # Adjust the port as needed
     env_file:
       - .env
+    volumes:
+      - "./chroma:/index_data"
     networks: 
       - pinked
 

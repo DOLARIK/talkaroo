@@ -34,7 +34,7 @@ RUN pip3 --no-cache-dir install \
 RUN pip3 install --upgrade pip
 RUN pip3 install \
     sentencepiece \
-    openai chromadb langchain \
+    openai langchain \
     tiktoken 
 
 RUN PROTOC_ZIP=protoc-3.15.8-linux-x86_64.zip && \
@@ -56,7 +56,7 @@ ENV FLASK_APP ./endpoint/app.py
 
 RUN pip3 install -e .
 RUN pip3 install langchain_anthropic langchain_openai numexpr google-search-results langchain_community
-# RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 
 ENTRYPOINT ["python", "/project/endpoint/app.py"]
