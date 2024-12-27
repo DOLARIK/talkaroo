@@ -80,6 +80,8 @@ export function VoiceCard() {
 
       console.log('API Endpoint:', process.env.RESPONSE_CREATION_AGGREGATION_API);
 
+      // ENDPOINT
+
       fetch('http://35.197.94.204:30500/ask' || 'http://localhost:30500/ask', {
 
   method: 'POST', // Method itself

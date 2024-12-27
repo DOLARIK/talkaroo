@@ -63,7 +63,9 @@ export const ChatCard = () => {
           //7.1 Stop recording before sending data
           stopRecording();
           //7.2 Send POST request to backend
-    
+
+
+          // ENDPOINT_URL_CHANGE
           fetch('http://localhost:30500/ask', {
       method: 'POST', // Method itself
       headers: {

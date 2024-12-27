@@ -1,4 +1,4 @@
-# cornell health
+# Talkaroo
 
 ### To deploy the project locally (staging environment):
 ```
@@ -11,6 +11,8 @@ make sure to keep .env in the directory
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 ```
 make sure to keep .env and .env.dev files in the directory
+
+To make edits to the API endpoint URL in the codebase find for files having keyword - 'ENDPOINT_URL_CHANGE'
 
 ### To deploy the production environmnet:
 ```
