@@ -13,6 +13,8 @@ def ask():
     #                    'ask': user_ask}
     request_schema = request.get_json(force=True)
 
+    print('USER_ID', request_schema['user_id'])
+
     chat = Chat(request_schema['user_id'], rounds = 5)
 
     response = chat.get_response(request_schema['ask'])

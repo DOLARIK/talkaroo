@@ -63,6 +63,13 @@ RUN PROTOC_ZIP=protoc-3.15.8-linux-x86_64.zip && \
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 RUN python3 -m pip install pymilvus==2.3.2
 
+RUN pip3 install flask flask_cors gunicorn
+RUN pip3 install langchain_anthropic langchain_openai numexpr google-search-results langchain_community
+
+ENV PYTHONUNBUFFERED 1
+
+ENV FLASK_APP ./endpoint/app.py
+
 WORKDIR /project
 
 ENTRYPOINT ["jupyter", "lab","--ip=0.0.0.0","--allow-root"]
