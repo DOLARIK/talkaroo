@@ -18,7 +18,9 @@ declare global {
 export const ChatCard = () => {
 
     const {user} = useAuth();
+    console.log("Debug: User object:", user);
     const userId = user?.uid;
+    console.log("Debug: userId:", user?.uid);
 
     const [isRecording, setIsRecording] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -72,7 +74,7 @@ export const ChatCard = () => {
         'Content-Type': 'application/json', // Indicates the content 
       },
       body: JSON.stringify({
-        user_id: "user",
+        user_id: userId ?? "user",
         ask: message +  "make the answer short but engaging"
       }) // Body data type must match "Content-Type" header
     })
@@ -219,8 +221,4 @@ export const ChatCard = () => {
   )
 }
 
-<<<<<<< HEAD
 export default ChatCard
-=======
-export default ChatCard
->>>>>>> deployment-patch-march29

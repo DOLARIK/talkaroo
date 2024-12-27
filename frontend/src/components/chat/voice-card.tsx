@@ -89,7 +89,7 @@ export function VoiceCard() {
     'Content-Type': 'application/json', // Indicates the content 
   },
   body: JSON.stringify({
-    user_id: "user",
+    user_id: userId ?? "user",
     ask: message +  "make the answer short but engaging"
   }) // Body data type must match "Content-Type" header
 })
